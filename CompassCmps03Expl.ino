@@ -1,13 +1,20 @@
 /*
-CMPS03 with arduino I2C example
+@Author Simon Remington
 
+*/
+
+/*
+CMPS03 with arduino I2C example
+understanding the compass: https://www.robot-electronics.co.uk/htm/cmps3tech.htm
+helpfull for wiring: https://www.noisebridge.net/wiki/Compass
+helpfull for i2c bus: https://robot-electronics.co.uk/i2c-tutorial
 This will display a value of 0 - 359 for a full rotation of the compass.
 
 The SDA line is on analog pin 4 of the arduino and is connected to pin 3 of the CMPS03.
 The SCL line is on analog pin 5 of the arduino and is conected to pin 2 of the CMPS03.
 Both SDA and SCL are also connected to the +5v via a couple of 1k8 resistors.
 A switch to callibrate the CMPS03 can be connected between pin 6 of the CMPS03 and the ground.
-The LEDs are on digital pis 3 and 4.
+The LEDs are on digital pin 3 and 4.
 */
 
 #include <Wire.h>

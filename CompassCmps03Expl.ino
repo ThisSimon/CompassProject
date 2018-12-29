@@ -15,6 +15,7 @@ The SCL line is on analog pin 5 of the arduino and is conected to pin 2 of the C
 Both SDA and SCL are also connected to the +5v via a couple of 1k8 resistors.
 A switch to callibrate the CMPS03 can be connected between pin 6 of the CMPS03 and the ground.
 The LEDs are on digital pin 3 and 4.
+A button is in pin 2
 */
 
 #include <Wire.h>
@@ -23,10 +24,14 @@ The LEDs are on digital pin 3 and 4.
 
 const int west=3;
 const int east=4;
+const int btnPin=2;
+int myTimer=20;
 
 void setup(){
   pinMode(west, OUTPUT);
   pinMode(east, OUTPUT);
+  pinMode(btnPin, INPUT);
+  
   digitalWrite(west, LOW);
   digitalWrite(east,LOW);
   delay(100);
@@ -40,7 +45,11 @@ void setup(){
 void loop(){
   byte highByte;
   byte lowByte;
-  
+  //if(btnPin){
+  if(digitalRead(btnPin)){  //if button pressed
+    myTimer=20;
+  }
+  while(myTimer > 0) {
    Wire.beginTransmission(ADDRESS); //starts communication with cmps03
    Wire.write(2);                   //Sends the register we wish to read
    Wire.endTransmission();
@@ -52,11 +61,11 @@ void loop(){
    int bearing = ((highByte<<8)+lowByte)/10; 
    
   // Serial.println(bearing);
-   if (bearing >5 && bearing <175){
+   if (bearing >10 && bearing <175){
     digitalWrite(west, LOW);
     digitalWrite(east, HIGH);
    }
-   else if  (bearing >185 && bearing <355){
+   else if  (bearing >185 && bearing <350){
     digitalWrite(west, HIGH);
     digitalWrite(east, LOW);
    }
@@ -69,5 +78,10 @@ void loop(){
     digitalWrite(west, LOW);
     digitalWrite(east, LOW);
    }
-   delay(200);
+   delay(500);
+    digitalWrite(west, LOW);
+    digitalWrite(east, LOW);
+   delay(500);
+   myTimer--;
+  }
 }

@@ -14,18 +14,19 @@ The SDA line is on analog pin 4 of the arduino and is connected to pin 3 of the 
 The SCL line is on analog pin 5 of the arduino and is conected to pin 2 of the CMPS03.
 Both SDA and SCL are also connected to the +5v via a couple of 1k8 resistors.
 A switch to callibrate the CMPS03 can be connected between pin 6 of the CMPS03 and the ground.
-The LEDs are on digital pin 3 and 4.
+The vibrating motors are on digital pin 3 and 4.
 A button is in pin 2
+As the compass is worn in the reversed direction we have to allow for this 
 */
 
 #include <Wire.h>
 
 #define ADDRESS 0x60 //defines address of compass
 
-const int west=3;
-const int east=4;
-const int btnPin=2;
-int myTimer=20;
+const int west=3; //this is pin 3
+const int east=4; //this is pin 5
+const int btnPin=2; //this is pin 2
+int myTimer=20; //number of times initial loop
 
 void setup(){
   pinMode(west, OUTPUT);
@@ -45,9 +46,8 @@ void setup(){
 void loop(){
   byte highByte;
   byte lowByte;
-  //if(btnPin){
-  if(digitalRead(btnPin)){  //if button pressed
-    myTimer=20;
+  if(digitalRead(btnPin)){  //if button pressed is true reset mytimer
+    myTimer=20; //loop 20 times
   }
   while(myTimer > 0) {
    Wire.beginTransmission(ADDRESS); //starts communication with cmps03
@@ -70,13 +70,13 @@ void loop(){
     digitalWrite(east, LOW);
    }
    else if  (bearing >=175 && bearing <=185){
-    digitalWrite(west, HIGH);
-    digitalWrite(east, HIGH);
+    digitalWrite(west, LOW);
+    digitalWrite(east, LOW);
    }
    else
    {
-    digitalWrite(west, LOW);
-    digitalWrite(east, LOW);
+    digitalWrite(west, HIGH);
+    digitalWrite(east, HIGH);
    }
    delay(500);
     digitalWrite(west, LOW);

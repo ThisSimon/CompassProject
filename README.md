@@ -5,3 +5,4 @@ The code is C++ for running on an Arduino board.
 Simply clone this project into the Arduino Directory
 Wiring diagrams to follow
 A simlpe demonstration can be found [HERE](https://youtu.be/dn31tZjSdEM)
+The leds have been replaced with vibrating motors.
